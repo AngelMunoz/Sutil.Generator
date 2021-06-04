@@ -4,7 +4,7 @@ type SlProp =
     { name: string
       description: string
       ``type``: string
-      defaultVvalue: string
+      defaultValue: string
       values: string array option }
 
 type SlMethod =

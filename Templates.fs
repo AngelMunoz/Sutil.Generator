@@ -11,7 +11,7 @@ let getPropName (name: string) =
     | "checked" -> "``checked``"
     | rest -> rest
 
-let getAttrname (name: string) =
+let getAttrName (name: string) =
     match name with
     | "type" -> "type'"
     | "open" -> "open'"
@@ -26,6 +26,14 @@ let getTypeType (type': string) =
     | "number" -> "float"
     | type' -> type'.Replace("'", "")
 
+let getDefaultValue (defaultValue: string) =
+    match defaultValue with
+    | "..." -> "Some Fable.Core.JS.Infinity"
+    | "undefined"
+    | "null"
+    | null -> "None"
+    | value -> $"""Some {value.Replace("'", "\"")}"""
+
 let getSlPropTpl (prop: SlProp) =
     let name = getPropName prop.name
     let type' = getTypeType prop.``type``
@@ -35,11 +43,11 @@ let getSlPropTpl (prop: SlProp) =
     """
 
 let slPropAttrTpl (prop: SlProp) =
-    let name = getAttrname prop.name
+    let name = getAttrName prop.name
     let type' = getTypeType prop.``type``
 
     $"""    /// <summary>{prop.description.Replace("\n", "\n    /// ")}</summary>
-    {name}: {type'} option"""
+    {name} : {type'} option"""
 
 let private getProps (props: SlProp array) =
     props
@@ -49,6 +57,34 @@ let private getAttrs (props: SlProp array) =
     props
     |> Array.fold (fun (current: string) (next: SlProp) -> $"{current}\n{slPropAttrTpl next}") ""
 
+let private getAttrRecordMemberValue (prop: SlProp) =
+    let name = getAttrName prop.name
+    let type' = getTypeType prop.``type``
+    let value = getDefaultValue prop.defaultValue
+
+    let addDot =
+        if type' = "float"
+           && value <> "None"
+           && value <> "Some Fable.Core.JS.Infinity" then
+            "."
+        else
+            ""
+
+    $"{name} = {value}{addDot}"
+
+let getAttrModule (className: string) (comps: SlProp array) =
+    let getAttrs =
+        comps
+        |> Array.fold (fun current next -> $"{current}\n        {getAttrRecordMemberValue next}") ""
+
+    $"""
+[<RequireQualifiedAccess>]
+module {className}Attributes  =
+    let create(): {className}Attributes = {{ {getAttrs}
+    }}
+     """
+
+
 let getComponentTpl (comp: SlComponent) =
     let moduleName = comp.className.[2..]
     let props = getProps comp.props
@@ -57,6 +93,12 @@ let getComponentTpl (comp: SlComponent) =
     let attrsTpl =
         if comp.props.Length > 0 then
             $"\n///\ntype {comp.className}Attributes = {{ {attrs}\n}}"
+        else
+            ""
+
+    let attrsModule =
+        if comp.props.Length > 0 then
+            getAttrModule comp.className comp.props
         else
             ""
 
@@ -73,6 +115,7 @@ type {comp.className} =
     inherit HTMLElement
     {props}
     {attrsTpl}
+///{attrsModule}
     """
 
 
