@@ -19,10 +19,7 @@ let main argv =
             let name = metadata.name
             let version = metadata.version
             printfn "Downloaded %s, version %s" name version
-
-            for element in metadata.components do
-                printfn $"{element.className.[2..]} - {element.tag} - {element.status} - {element.since}"
-
+            tryWriteFiles version metadata.components
             return 0
         | None -> return 1
     }
