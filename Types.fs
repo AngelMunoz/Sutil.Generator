@@ -22,8 +22,6 @@ type SlCssCustomProperties = { name: string; description: string }
 type SlParts = { name: string; description: string }
 type SlAnimation = { name: string; description: string }
 
-
-
 type SlComponent =
     { className: string
       tag: string

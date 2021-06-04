@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
+    <Compile Include="Templates.fs" />
     <Compile Include="IO.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

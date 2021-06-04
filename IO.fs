@@ -1,6 +1,10 @@
 namespace Shoelace.Generator
 
 open FSharp.Control.Tasks
+open System
+
+open type System.Text.Encoding
+
 open System.IO
 open System.Text.Json
 open System.Text.Json.Serialization
@@ -9,6 +13,11 @@ open CliWrap
 
 
 module IO =
+
+    let private getBytesFromStr (strval: string) =
+        let b = UTF8.GetBytes(strval)
+
+        ReadOnlySpan b
 
     let downloadPackage () =
         let cmd =
@@ -54,8 +63,12 @@ module IO =
     let private tryWriteComponentFile (root: string) (comp: SlComponent) =
         let name = comp.className.[2..]
         let path = Path.Combine(root, $"{name}.fs")
-        use file = File.CreateText path
-        file.WriteLine($"module Sutil.Shoelace.{name}")
+        use file = File.Create path
+
+        let bytes =
+            getBytesFromStr (Templates.getComponentTpl comp)
+
+        file.Write bytes
 
     let private tryWriteLibraryFsProj (root: string) (version: string) (components: SlComponent array) =
         let library = Path.Combine(root, "Library.fs")
@@ -69,41 +82,10 @@ module IO =
 
         use fsproj = File.Create fsproj
 
-        let writeComponents =
-            components
-            |> Array.fold
-                (fun (current: string) (next: SlComponent) ->
-                    $"{current}\n    <Compile Include=\"{next.className.[2..]}.fs\"/>")
-                """<Content Include="*.fsproj; *.fs; *.js;" Exclude="**\*.fs.js" PackagePath="fable\" />"""
-
-
-        let template =
-            $"""
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <NpmDependencies>
-      <NpmPackage Name="@shoelace-style/shoelace" Version="{version}" />
-    </NpmDependencies>
-  </PropertyGroup>
-  <ItemGroup>
-    {writeComponents}
-    <Compile Include="Library.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Fable.Browser.Dom" Version="2.4.4" />
-    <PackageReference Include="Fable.Core" Version="3.2.7" />
-    <PackageReference Include="Sutil" Version="1.0.0-*" />
-  </ItemGroup>
-</Project>"""
+        let writeComponents = Templates.getFsFileReference components
 
         let bytes =
-            let b =
-                System.Text.Encoding.UTF8.GetBytes(template.TrimStart())
-
-            System.ReadOnlySpan b
+            getBytesFromStr (Templates.getFsProjTpl writeComponents version)
 
         fsproj.Write bytes
 
