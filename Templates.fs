@@ -1,3 +1,9 @@
+(*
+    DO NOT USE FANTOMAS OR ANOTHER FORMATTER 
+    THAT CHANGES THE MULTI-LINE STRING STRUCTURE ON THIS FILE
+    IT WILL BREAK THE DOC COMMENTS GENERATION
+*)
+
 [<RequireQualifiedAccess>]
 module Shoelace.Generator.Templates
 
@@ -51,6 +57,85 @@ let getSlPropTpl (prop: SlProp) =
 
     $"""    /// <summary>{description}</summary>
     abstract member {name} : {type'} with get, set"""
+
+
+let private getEventList (events: SlEvents array) (padding: int option) =
+    let padding = defaultArg padding 0
+    let padding = " " |> String.replicate padding
+
+    let getEvents =
+        events
+        |> Array.fold
+            (fun (current: string) next ->
+                let description =
+                    HttpUtility.HtmlEncode(next.description.Replace("\n", "\n    /// "))
+
+                let eventDetails =
+                    match next.details with
+                    | "void" -> "unit"
+                    | rest -> rest
+
+                let current =
+                    if current.Length > 0 then
+                        $"{current}\n"
+                    else
+                        ""
+
+                $"{padding}{current}{padding}/// - `{next.name}`: {description}")
+            ""
+
+    $"""{padding}/// Events:
+{padding}{getEvents.Trim()}"""
+
+let private getSlotList (slots: SlSlots array) (padding: int option) =
+    let padding = defaultArg padding 0
+    let padding = " " |> String.replicate padding
+
+    let getSlots =
+        slots
+        |> Array.fold
+            (fun (current: string) next ->
+                let description =
+                    HttpUtility.HtmlEncode(next.description.Replace("\n", "\n    /// "))
+
+                let name =
+                    if next.name.Length = 0 then
+                        "default"
+                    else
+                        next.name
+
+                let current =
+                    if current.Length > 0 then
+                        $"{current}\n"
+                    else
+                        ""
+
+                $"{padding}{current}{padding}/// - `{name}`: {description}")
+            ""
+
+    $"""{padding}/// Slots:
+{padding}{getSlots.Trim()}"""
+
+
+let getComponentCommentTpl (comp: SlComponent) (padding: int option) =
+    let spacePadding = defaultArg padding 0
+    let padding = " " |> String.replicate spacePadding
+
+    $"""
+{padding}/// <summary>
+{padding}/// Tag: {comp.tag}
+{padding}///
+{padding}/// Since: {comp.since}
+{padding}///
+{padding}/// Status: {comp.status}.
+{padding}///
+{padding}/// File: {comp.file}
+{padding}///
+{getEventList comp.events (Some spacePadding)}
+{getSlotList comp.slots (Some spacePadding)}
+{padding}///
+{padding}/// </summary>""".TrimEnd()
+
 
 let slMethodTpl (method: SlMethod) =
     let name = method.name
@@ -205,7 +290,7 @@ let getCompModule (tagAndName: string * string) (comp: SlProp array) =
     $"""
 ///
 [<RequireQualifiedAccess>]
-module internal {className} =
+module {className} =
     /// doesn't provide any binding helper logic and allows the user to take full
     /// control over the HTML Element either to create static HTML or do custom bindings
     /// via "bindFragment" or "Bind.attr("", binding)"
@@ -234,12 +319,7 @@ let getComponentTpl (comp: SlComponent) =
 module Sutil.Shoelace.{moduleName}
 open Browser.Types
 open Sutil
-open Sutil.DOM
-/// <summary>
-/// Tag: {comp.tag}
-/// Status: {comp.status}.
-/// File: {comp.file}
-/// </summary>
+open Sutil.DOM{getComponentCommentTpl comp None}
 [<AllowNullLiteral>]
 type {comp.className} =
     inherit HTMLElement
@@ -247,6 +327,19 @@ type {comp.className} =
     {methods}
     {attrsTpl}{attrsModule}{getCompModule (comp.tag, comp.className) (comp.props)}"""
 
+
+let getStatefulComponentTpl (comp: SlComponent) =
+    if comp.props.Length > 0 then
+        $"""{getComponentCommentTpl comp (Some 4)}
+    static member inline {comp.className} (attrs: IStore<{comp.className}Attributes>, content: NodeFactory seq) =
+        {comp.className}.stateful attrs content"""
+    else
+        ""
+
+let getStatelessComponentTpl (comp: SlComponent) =
+    $"""{getComponentCommentTpl comp (Some 4)}
+    static member inline {comp.className} (content: NodeFactory seq) =
+        {comp.className}.stateless content"""
 
 let getShoelaceAPIClass (components: SlComponent array) =
     let opens =
@@ -274,25 +367,20 @@ let getShoelaceAPIClass (components: SlComponent array) =
                     else
                         ""
 
-                let stateful =
-                    if next.props.Length > 0 then
-                        $"""
-    static member inline {next.className} (attrs: IStore<{next.className}Attributes>, content: NodeFactory seq) =
-        {next.className}.stateful attrs content"""
-                    else
-                        ""
+                let stateful = getStatefulComponentTpl next
 
-                ($"""
-    {current}static member inline {next.className} (content: NodeFactory seq) =
-        {next.className}.stateless content
-    {stateful}"""
-                    .TrimStart()))
+                let stateless = getStatelessComponentTpl next
+
+                $"{current}{stateless}{stateful}")
             ""
 
     $"""namespace Sutil.Shoelace
 open Sutil
 open Sutil.DOM
 {opens}
+/// <summary>
+/// Provides a simple API to access all Shoelace Components available
+/// </summary>
 type Shoelace =
     {methods}"""
 
@@ -307,7 +395,17 @@ let getFsFileReference (components: SlComponent array) =
 let getFsProjTpl (comps: string) (version: string) =
     $"""<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Description>Sutil bindings for Shoelace Web Components the contents of this package are auto-generated</Description>
+    <PackageProjectUrl>https://github.com/AngelMunoz/Shoelace.Generator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AngelMunoz/Shoelace.Generator</RepositoryUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageTags>fsharp;fable;svelte</PackageTags>
+    <Authors>Angel D. Munoz</Authors>
+    <Version>{version}</Version>
+    <PackageVersion>{version}</PackageVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DefineConstants>$(DefineConstants);FABLE_COMPILER;</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <NpmDependencies>
