@@ -20,6 +20,7 @@ let main argv =
             let version = metadata.version
             printfn "Downloaded %s, version %s" name version
             tryWriteFiles version metadata.components
+            printfn $"Wrote: [{metadata.components.Length}] Components to [Sutil.Shoelace]"
             return 0
         | None -> return 1
     }

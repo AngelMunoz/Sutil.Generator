@@ -205,7 +205,7 @@ let getCompModule (tagAndName: string * string) (comp: SlProp array) =
     $"""
 ///
 [<RequireQualifiedAccess>]
-module {className} =
+module internal {className} =
     /// doesn't provide any binding helper logic and allows the user to take full
     /// control over the HTML Element either to create static HTML or do custom bindings
     /// via "bindFragment" or "Bind.attr("", binding)"
@@ -246,6 +246,55 @@ type {comp.className} =
     {props}
     {methods}
     {attrsTpl}{attrsModule}{getCompModule (comp.tag, comp.className) (comp.props)}"""
+
+
+let getShoelaceAPIClass (components: SlComponent array) =
+    let opens =
+        components
+        |> Array.fold
+            (fun (current: string) next ->
+                let name = next.className.[2..]
+
+                let current =
+                    if current.Length > 0 then
+                        $"{current}\n"
+                    else
+                        ""
+
+                $"{current}open Sutil.Shoelace.{name}")
+            ""
+
+    let methods =
+        components
+        |> Array.fold
+            (fun (current: string) next ->
+                let current =
+                    if current.Length > 0 then
+                        $"{current}\n    "
+                    else
+                        ""
+
+                let stateful =
+                    if next.props.Length > 0 then
+                        $"""
+    static member inline {next.className} (attrs: IStore<{next.className}Attributes>, content: NodeFactory seq) =
+        {next.className}.stateful attrs content"""
+                    else
+                        ""
+
+                ($"""
+    {current}static member inline {next.className} (content: NodeFactory seq) =
+        {next.className}.stateless content
+    {stateful}"""
+                    .TrimStart()))
+            ""
+
+    $"""namespace Sutil.Shoelace
+open Sutil
+open Sutil.DOM
+{opens}
+type Shoelace =
+    {methods}"""
 
 
 let getFsFileReference (components: SlComponent array) =

@@ -76,10 +76,12 @@ module IO =
         let fsproj =
             Path.Combine(root, "Sutil.Shoelace.fsproj")
 
-        use library = File.CreateText library
-        library.WriteLine "namespace Sutil.Shoelace\n"
-        library.WriteLine "type Shoelace = class end"
+        use library = File.Create library
 
+        let bytes =
+            getBytesFromStr (Templates.getShoelaceAPIClass components)
+
+        library.Write bytes
         use fsproj = File.Create fsproj
 
         let writeComponents = Templates.getFsFileReference components
