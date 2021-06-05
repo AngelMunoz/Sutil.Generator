@@ -91,8 +91,7 @@ module IO =
 
 
     let tryWriteFiles (version: string) (components: SlComponent array) =
-        let path =
-            Path.Combine("./", "Shoelace.Components")
+        let path = Path.Combine("./", "Sutil.Shoelace")
 
         let dir = Directory.CreateDirectory(path)
 

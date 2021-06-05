@@ -4,13 +4,16 @@ type SlProp =
     { name: string
       description: string
       ``type``: string
+      attribute: string option
       defaultValue: string
       values: string array option }
 
 type SlMethod =
     { name: string
       description: string
-      ``params``: {| name: string; ``type``: string |} array }
+      ``params``: {| name: string
+                     ``type``: string
+                     isOptional: bool option |} array }
 
 type SlEvents =
     { name: string
