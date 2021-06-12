@@ -5,6 +5,7 @@ open System
 
 open type System.Text.Encoding
 
+open System.Runtime.InteropServices
 open System.IO
 open System.Text.Json
 open System.Text.Json.Serialization
@@ -13,6 +14,8 @@ open CliWrap
 
 
 module IO =
+    let isWindows =
+        RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
 
     let private getBytesFromStr (strval: string) =
         let b = UTF8.GetBytes(strval)
@@ -22,7 +25,7 @@ module IO =
     let downloadPackage () =
         let cmd =
             Cli
-                .Wrap("npx")
+                .Wrap(if isWindows then "npx.cmd" else "npx")
                 .WithArguments("pnpm install @shoelace-style/shoelace")
                 .WithStandardErrorPipe(PipeTarget.ToStream(System.Console.OpenStandardError()))
                 .WithStandardOutputPipe(PipeTarget.ToStream(System.Console.OpenStandardOutput()))
