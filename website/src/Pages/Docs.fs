@@ -13,9 +13,9 @@ let view (page: string) =
     Shoelace.SlInclude [
       Attr.src $"/dist/docs/{page}.html"
       Attr.custom ("allow-scripts", "true")
-      Html.p [
-        text
+      on "sl-error" (fun _ ->
+        Browser.Dom.document.querySelector(".doc-page").textContent <-
           "We were not able to find that page, are you sure the url address is correct?"
-      ]
+      ) []
     ]
   ]
