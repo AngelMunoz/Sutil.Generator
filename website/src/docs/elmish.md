@@ -81,7 +81,7 @@ the normal thing here would be to dispatch an event
 ```fsharp
 Shoelace.SlButton [ text "Open Externally"; onClick (fun _ -> dispatch (SetIsOpen true)) [] ]
 ```
-this would trigger our elmish look and update our state, let's check how to bind that to our elements
+this would trigger our elmish update, let's check how to bind that to our components
 
 ```fsharp
 let state, dispatch = Store.makeElmishSimple init update ignore ()

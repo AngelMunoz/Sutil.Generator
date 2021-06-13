@@ -4,7 +4,7 @@
 
 > For the full list of components please visit [Shoelace]'s website even though the components have been annotated with doc coments so VSCode, Rider or VS2019 pick them up you can follow the original docs to guide you through the components
 
-Check the full list of components we build `Sutil.Shoelace` against a metadata file provided by the npm package, we follow a few conventions to keep the API consistent
+We build `Sutil.Shoelace` against a metadata file provided by the npm package, and we follow a few conventions to keep the API consistent and F# friendly
 
 ```html
 <!-- Shoelace Components have the `sl-` prefix -->
