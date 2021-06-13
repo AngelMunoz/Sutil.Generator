@@ -45,14 +45,13 @@ This will load all the shoelace components to the browserand then you should be 
 
 <sl-button type='primary'>Hello, there!</sl-button>
 
-For development purposes this should be enough. If you want to optimize for production I'd encourage you to keep reading
-
+For development purposes this should be enough. If you want to optimize for production I'd encourage you to keep reading the next section
 ## Cherry-pick components
 
 > Please feel free to also check shoelace's [documentation](https://shoelace.style/getting-started/installation?id=bundling)
 
-If you are using a bundler (most likely) then you might not want to do that because that will increase your bundle's size and will load components that are likely to not be used at all, in those cases you should import components one by one
 
+To optimize your bundle sizes and prevent unused code ending up in your user's storage, then cherry-picking is the ideal option since you will only load and bundle the components you're using.
 
 ```fsharp
 
