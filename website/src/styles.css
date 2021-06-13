@@ -81,7 +81,7 @@ article.doc-page sl-include {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --su-background-color: var(--sl-color-gray-700);
+    --su-background-color: #1e1e1e;
     --su-color: var(--sl-color-gray-100);
     --sl-panel-background-color: var(--su-background-color)
   }
@@ -94,6 +94,11 @@ article.doc-page sl-include {
   }
   sl-menu-item::part(label) {
     color: var(--su-color);
+  }
+
+  sl-alert::part(base) {
+    color: var(--su-color);
+    background-color: var(--sl-panel-background-color);
   }
 }
 

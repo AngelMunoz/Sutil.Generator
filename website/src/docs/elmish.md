@@ -23,6 +23,7 @@ open Sutil
 open Sutil.Store
 open Sutil.Attr
 open Sutil.DOM
+// you can open Shoelace statically as well!
 open Sutil.Shoelace
 
 type State = { isOpen: bool }
@@ -123,7 +124,8 @@ open Sutil
 open Sutil.Store
 open Sutil.Attr
 open Sutil.DOM
-open Sutil.Shoelace
+// this time we'll do an open type
+open type Sutil.Shoelace
 
 type State = { isOpen: bool }
 
@@ -147,22 +149,22 @@ let view() =
         // when the component gets disposed
         disposeOnUnmount [ state ]
 
-        Shoelace.SlButton [
+        SlButton [
             text "Open Externally"
             // trigger the elmish update
             onClick (fun _ -> dispatch (SetIsOpen true)) []
         ]
-        Shoelace.SlMenu [
+        SlMenu [
             // bind the observable
             Bind.attr("open", isOpen)
-            Shoelace.SlButton [ Attr.slot "trigger"; Attr.custom("caret", "true"); text "Edit" ]
-            Shoelace.SlMenu [
-                Shoelace.SlMenuItem [ text "Cut" ]
-                Shoelace.SlMenuItem [ text "Copy" ]
-                Shoelace.SlMenuItem [ text "Paste" ]
-                Shoelace.SlMenuDivider []
-                Shoelace.SlMenuItem [ text "Find" ]
-                Shoelace.SlMenuItem [ text "Replace" ]
+            SlButton [ Attr.slot "trigger"; Attr.custom("caret", "true"); text "Edit" ]
+            SlMenu [
+                SlMenuItem [ text "Cut" ]
+                SlMenuItem [ text "Copy" ]
+                SlMenuItem [ text "Paste" ]
+                SlMenuDivider []
+                SlMenuItem [ text "Find" ]
+                SlMenuItem [ text "Replace" ]
             ]
         ]
     ]

@@ -12,6 +12,7 @@ let view (page: string) =
     class' "doc-page"
     Shoelace.SlInclude [
       Attr.src $"/dist/docs/{page}.html"
+      Attr.custom ("allow-scripts", "true")
       Html.p [
         text
           "We were not able to find that page, are you sure the url address is correct?"
