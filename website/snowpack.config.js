@@ -1,12 +1,17 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
+
     mount: {
         public: { url: '/', static: true },
         src: { url: '/dist' },
         'node_modules/@shoelace-style/shoelace/dist/assets': { url: '/shoelace/assets', static: true },
         '../Sutil.Shoelace': { url: '/Sutil.Shoelace', static: true }
     },
-    plugins: ['@snowpack/plugin-svelte', '@snowpack/plugin-dotenv'],
+    plugins: [
+        '@snowpack/plugin-svelte',
+        '@snowpack/plugin-dotenv',
+        './markdown.pl.js'
+    ],
     routes: [],
     optimize: {
         /* Example: Bundle your final build: */
@@ -19,6 +24,7 @@ module.exports = {
     },
     packageOptions: {
         /* ... */
+        polyfillNode: true
     },
     devOptions: {
         /* ... */
@@ -26,7 +32,8 @@ module.exports = {
     buildOptions: {
         /* ... */
         clean: true,
-        out: "dist"
+        out: "dist",
+        htmlFragments: true
     },
     exclude: [
         "**/*.{fs,fsproj}",

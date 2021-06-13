@@ -4,7 +4,9 @@ specifiers:
   '@shoelace-style/shoelace': ^2.0.0-beta.43
   '@snowpack/plugin-dotenv': ~2.1.0
   '@snowpack/plugin-svelte': ~3.7.0
-  navigo: ^8.11.1
+  highlight.js: ~11.0.1
+  markdown-it: ~12.0.6
+  navigo: ~8.11.1
   rollup: ~2.50.2
   snowpack: ~3.5.1
   svelte: ~3.38.2
@@ -18,6 +20,8 @@ dependencies:
 devDependencies:
   '@snowpack/plugin-dotenv': 2.1.0
   '@snowpack/plugin-svelte': 3.7.0_rollup@2.50.2+svelte@3.38.2
+  highlight.js: 11.0.1
+  markdown-it: 12.0.6
   rollup: 2.50.2
   snowpack: 3.5.1
   svelte-hmr: 0.14.4_svelte@3.38.2
@@ -228,6 +232,10 @@ packages:
     dependencies:
       delegates: 1.0.0
       readable-stream: 2.3.7
+    dev: true
+
+  /argparse/2.0.1:
+    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
     dev: true
 
   /array-union/2.1.0:
@@ -468,6 +476,10 @@ packages:
     dev: true
     optional: true
 
+  /entities/2.1.0:
+    resolution: {integrity: sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==}
+    dev: true
+
   /env-paths/2.2.1:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
     engines: {node: '>=6'}
@@ -652,6 +664,11 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+    dev: true
+
+  /highlight.js/11.0.1:
+    resolution: {integrity: sha512-EqYpWyTF2s8nMfttfBA2yLKPNoZCO33pLS4MnbXQ4hECf1TKujCt1Kq7QAdrio7roL4+CqsfjqwYj4tYgq0pJQ==}
+    engines: {node: '>=12.0.0'}
     dev: true
 
   /hosted-git-info/4.0.2:
@@ -851,6 +868,12 @@ packages:
       verror: 1.10.0
     dev: true
 
+  /linkify-it/3.0.2:
+    resolution: {integrity: sha512-gDBO4aHNZS6coiZCKVhSNh43F9ioIL4JwRjLZPkoLIY4yZFwg264Y5lu2x6rb1Js42Gh6Yqm2f6L2AJcnkzinQ==}
+    dependencies:
+      uc.micro: 1.0.6
+    dev: true
+
   /lit-element/3.0.0-rc.2:
     resolution: {integrity: sha512-2Z7DabJ3b5K+p5073vFjMODoaWqy5PIaI4y6ADKm+fCGc8OnX9fU9dMoUEBZjFpd/bEFR9PBp050tUtBnT9XTQ==}
     dependencies:
@@ -900,6 +923,21 @@ packages:
       ssri: 8.0.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /markdown-it/12.0.6:
+    resolution: {integrity: sha512-qv3sVLl4lMT96LLtR7xeRJX11OUFjsaD5oVat2/SNBIb21bJXwal2+SklcRbTwGwqWpWH/HRtYavOoJE+seL8w==}
+    hasBin: true
+    dependencies:
+      argparse: 2.0.1
+      entities: 2.1.0
+      linkify-it: 3.0.2
+      mdurl: 1.0.1
+      uc.micro: 1.0.6
+    dev: true
+
+  /mdurl/1.0.1:
+    resolution: {integrity: sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=}
     dev: true
 
   /merge2/1.4.1:
@@ -1606,6 +1644,10 @@ packages:
 
   /tweetnacl/0.14.5:
     resolution: {integrity: sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=}
+    dev: true
+
+  /uc.micro/1.0.6:
+    resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
     dev: true
 
   /unique-filename/1.1.1:

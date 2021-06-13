@@ -5,6 +5,9 @@
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Router.fs" />
+    <Compile Include="Routes.fs" />
+    <Compile Include="Components/Sidenav.fs" />
+    <Compile Include="Pages/Docs.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>

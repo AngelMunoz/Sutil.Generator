@@ -11,6 +11,8 @@ importSideEffects "@shoelace-style/shoelace/dist/themes/dark.css"
 
 importSideEffects "./styles.css"
 importSideEffects "@shoelace-style/shoelace/dist/shoelace.js"
+importSideEffects "highlight.js/styles/nord.css"
+
 
 [<ImportMember("@shoelace-style/shoelace/dist/utilities/base-path.js")>]
 let setBasePath (path: string) : unit = jsNative
