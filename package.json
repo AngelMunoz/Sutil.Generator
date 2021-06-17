@@ -1,6 +1,0 @@
-{
-	"private": true,
-	"dependencies": {
-		"@shoelace-style/shoelace": "^2.0.0-beta.43"
-	}
-}
