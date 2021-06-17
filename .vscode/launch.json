@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net5.0/Shoelace.Generator.dll",
+            "program": "${workspaceFolder}/src/Generator/bin/Debug/net5.0/Generator.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

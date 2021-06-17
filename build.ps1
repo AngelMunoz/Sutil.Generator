@@ -5,12 +5,12 @@ dotnet run -C Release
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet build Sutil.Shoelace 
+dotnet build src/Sutil.Shoelace/Sutil.Shoelace
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet fable --cwd Sutil.Shoelace
+dotnet fable --cwd src/Sutil.Shoelace/Sutil.Shoelace
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet pack Sutil.Shoelace -o dist
+dotnet pack src/Sutil.Shoelace/Sutil.Shoelace -o dist
