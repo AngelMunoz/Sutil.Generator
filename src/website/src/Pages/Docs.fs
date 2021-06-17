@@ -7,15 +7,11 @@ open Sutil.Shoelace
 open Sutil.Styling
 open Sutil.Attr
 
-let view (page: string) =
+let view (library: string) (page: string) =
   Html.article [
     class' "doc-page"
     Shoelace.SlInclude [
-      Attr.src $"/dist/docs/{page}.html"
+      Attr.src $"/dist/docs/{library}/{page}.html"
       Attr.custom ("allow-scripts", "true")
-      on "sl-error" (fun _ ->
-        Browser.Dom.document.querySelector(".doc-page").textContent <-
-          "We were not able to find that page, are you sure the url address is correct?"
-      ) []
     ]
   ]

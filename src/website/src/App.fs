@@ -38,34 +38,41 @@ let view () =
   Router.on "/" (fun _ -> navigateTo Home) |> ignore
 
   Router.on
-    "/docs/:page"
-    (fun (mtc: Match<{| page: string option |}, _> option) ->
+    ":library/docs/:page"
+    (fun (mtc: Match<DocsUrlData, _> option) ->
       match mtc with
       | Some mtc ->
           match mtc.data with
-          | Some data ->
-              data.page
-              |> Option.defaultValue "getting-started"
-              |> Docs
-              |> navigateTo
-          | None -> navigateTo (Docs("getting-started"))
-      | None -> navigateTo (Docs("getting-started")))
-  |> ignore
+          | Some { library = library; page = None } ->
+              let page = "getting-started"
+              let docs = Docs(library, page)
+              navigateTo docs
+          | Some { library = library; page = page } ->
+              let page =
+                page |> Option.defaultValue "getting-started"
 
-  Router.on "/about" (fun _ -> navigateTo About)
+              let docs = Docs(library, page)
+              navigateTo docs
+          | None -> navigateTo Home
+      | None -> navigateTo Home)
   |> ignore
 
   Router
     .notFound(fun _ -> navigateTo NotFound)
     .resolve()
 
+  let (|Shoelace|Fast|) =
+    function
+    | "fast" -> Fast
+    | _ -> Shoelace
+
   let page =
     let location = getCurrentLocation ()
 
     match location with
     | [||] -> Page.Home
-    | [| "about" |] -> Page.About
-    | [| "docs"; name |] -> Page.Docs name
+    | [| "fast"; "docs"; name |] -> Page.Docs("fast", name)
+    | [| "shoelace"; "docs"; name |] -> Page.Docs("shoelace", name)
     | _ -> Page.NotFound
 
   navigateTo page
@@ -83,12 +90,21 @@ let view () =
         ]
         Shoelace.SlButton [
           type' "text"
+          text "Shoelace"
+          Shoelace.SlIcon [
+            Attr.name "book"
+            Attr.slot "prefix"
+          ]
+          onClick (fun _ -> Router.navigate "shoelace/docs/index" None) []
+        ]
+        Shoelace.SlButton [
+          type' "text"
           text "Documentation"
           Shoelace.SlIcon [
             Attr.name "book"
             Attr.slot "prefix"
           ]
-          onClick (fun _ -> Router.navigate "/docs/getting-started" None) []
+          onClick (fun _ -> Router.navigate "fast/docs/index" None) []
         ]
       ]
       Html.section [
@@ -114,9 +130,12 @@ let view () =
       bindFragment state
       <| fun state ->
            match state.page with
-           | Home -> Pages.Docs.view "index"
-           | About -> Html.article [ text "About" ]
-           | Docs name -> Pages.Docs.view (name)
+           | Home -> Pages.Home.view ()
+           | Docs (library, page) -> Pages.Docs.view library page
+           | Library library ->
+               match library with
+               | Shoelace -> Pages.Shoelace.view ()
+               | Fast -> Pages.Fast.view ()
            | NotFound -> Html.article [ text "NotFound" ]
     ]
 

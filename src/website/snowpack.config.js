@@ -8,7 +8,6 @@ module.exports = {
         '../Sutil.Shoelace': { url: '/Sutil.Shoelace', static: true }
     },
     plugins: [
-        '@snowpack/plugin-svelte',
         '@snowpack/plugin-dotenv',
         './markdown.pl.js'
     ],

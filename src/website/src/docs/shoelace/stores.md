@@ -1,4 +1,4 @@
-[Elmish]: #/docs/elmish
+[Elmish]: #/shoelace/docs/elmish
 # Stores
 
 > To check how to work with elmish check out [Elmish]
