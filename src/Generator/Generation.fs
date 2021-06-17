@@ -14,7 +14,7 @@ open Types
 open System.Threading.Tasks
 
 
-module IO =
+module Generation =
     let private isWindows =
         RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
 
@@ -92,35 +92,79 @@ module IO =
 
         fsproj.Write bytes
 
+    let private generateShoelaceLib () =
+        task {
+            printfn "Generating Shoelace Library..."
+            printfn "Downloading package @shoelace-style/shoelace"
+
+            let! result = downloadPackage "@shoelace-style/shoelace"
+
+            if result.ExitCode <> 0 then
+                raise (Exception("Failed to Download the package"))
+
+            let! metadata = parseShoelaceMetadata ()
+            let path = Path.Combine("../", "Sutil.Shoelace")
+
+            let dir = Directory.CreateDirectory(path)
+
+            match metadata with
+            | Some metadata ->
+                printfn $"Using Shoelace - {metadata.version} from {metadata.author}, {metadata.license}"
+
+                metadata.components
+                |> Array.Parallel.iter (writeShelaceComponentFile dir.FullName)
+
+                writeShoelaceLibraryFsProj dir.FullName metadata.version metadata.components
+                printfn $"Generated {metadata.components.Length} Components"
+            | None ->
+                printfn "Failed to parse the metadata.json file, will not continue."
+                ()
+        }
+
+    let private getFastComponents () =
+        let tryDeserializeFile (path: string) =
+            task {
+                use content = File.OpenRead path
+
+                try
+                    let! definition =
+                        JsonSerializer.DeserializeAsync<Types.HtmlCustomDataVSC>(content, getJsonOptions ())
+
+                    return definition.tags |> Seq.tryHead
+                with ex ->
+                    eprintfn "Failed to parse File %s %s" path ex.Message
+                    return None
+            }
+
+        task {
+            let path =
+                let combined =
+                    Path.Combine("./", "node_modules", "@microsoft", "fast-components", "dist", "esm")
+
+                Path.GetFullPath combined
+
+            return!
+                Directory.GetFiles(path, "*.vscode.definition.json", SearchOption.AllDirectories)
+                |> Array.Parallel.map tryDeserializeFile
+                |> Task.WhenAll
+        }
+
+    let generateFastLib () =
+        task {
+            printfn "Generate FAST library..."
+            printfn "Downloading package @microsoft/fast-components"
+
+            let! result = downloadPackage "@microsoft/fast-components"
+
+            if result.ExitCode <> 0 then
+                raise (Exception("Failed to Download the package"))
+
+            let! components = getFastComponents ()
+            let result = components |> Array.Parallel.choose id
+            printfn "%A" result
+        }
 
     let generateLibrary (componentSystem: ComponentSystem) =
-        match componentSystem with 
-        | ComponentSystem.Shoelace ->
-            task {
-                printfn "Generating Shoelace Library..."
-                printfn "Downloading package @shoelace-style/shoelace"
-                let! result = downloadPackage ("@shoelace-style/shoelace")
-            
-                if result.ExitCode <> 0 then
-                    raise (Exception("Failed to Download the package"))
-            
-                let! metadata = parseShoelaceMetadata ()
-                let path = Path.Combine("../", "Sutil.Shoelace")
-
-                let dir = Directory.CreateDirectory(path)
-
-                match metadata with
-                | Some metadata ->
-                    printfn $"Using Shoelace - {metadata.version} from {metadata.author}, {metadata.license}"
-                    metadata.components
-                    |> Array.Parallel.iter (writeShelaceComponentFile dir.FullName)
-
-                    writeShoelaceLibraryFsProj dir.FullName metadata.version metadata.components
-                    printfn $"Generated {metadata.components.Length} Components"
-                | None ->
-                    printfn "Failed to parse the metadata.json file, will not continue."
-                    ()
-            }
-        | ComponentSystem.Fast -> Task.FromResult(())
-        
-
+        match componentSystem with
+        | ComponentSystem.Shoelace -> generateShoelaceLib ()
+        | ComponentSystem.Fast -> generateFastLib ()

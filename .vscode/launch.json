@@ -5,13 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Run Shoelace",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/Generator/bin/Debug/net5.0/Generator.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
+            "args": [
+                "-cs",
+                "shoelace"
+            ],
+            "cwd": "${workspaceFolder}/src/Generator",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Run Fast",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Generator/bin/Debug/net5.0/Generator.dll",
+            "args": [
+                "-cs",
+                "fast"
+            ],
+            "cwd": "${workspaceFolder}/src/Generator",
             "stopAtEntry": false,
             "console": "internalConsole"
         }

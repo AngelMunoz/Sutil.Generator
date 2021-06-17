@@ -7,7 +7,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="Fast.fs" />
     <Compile Include="Shoelace.fs" />
-    <Compile Include="IO.fs" />
+    <Compile Include="Generation.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
