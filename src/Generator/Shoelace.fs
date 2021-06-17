@@ -398,7 +398,10 @@ type Shoelace =
     let getFsProjTpl (comps: string) (version: string) =
         $"""<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Sutil bindings for Shoelace Web Components the contents of this package are auto-generated</Description>
+    <Description>
+        Sutil bindings for Shoelace Web Components.
+        The contents of this package are auto-generated
+    </Description>
     <PackageProjectUrl>https://github.com/AngelMunoz/Sutil.Generator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AngelMunoz/Sutil.Generator</RepositoryUrl>
     <PackageIconUrl></PackageIconUrl>
@@ -420,8 +423,8 @@ type Shoelace =
     <Compile Include="Library.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Browser.Dom" Version="2.4.4" />
-    <PackageReference Include="Fable.Core" Version="3.2.7" />
+    <PackageReference Include="Fable.Browser.Dom" Version="2.*" />
+    <PackageReference Include="Fable.Core" Version="3.*" />
     <PackageReference Include="Sutil" Version="1.0.0-*" />
   </ItemGroup>
 </Project>{'\n'}"""

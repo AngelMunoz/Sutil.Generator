@@ -12,6 +12,7 @@ open System.Text.Json.Serialization
 open CliWrap
 open Types
 open System.Threading.Tasks
+open Sutil.Generator
 
 
 module Generation =
@@ -121,6 +122,50 @@ module Generation =
                 ()
         }
 
+
+    let private writeFastComponentFile (root: string) (comp: TagVsCodeDefinition) =
+        let name =
+            let upercased =
+                comp.name.Split('-')
+                |> Array.tail
+                |> Array.map (fun word -> $"{Char.ToUpperInvariant(word.[0])}{word.[1..]}")
+
+            String.Join("", upercased)
+
+        let path = Path.Combine(root, $"{name}.fs")
+        use file = File.Create path
+
+        let bytes =
+            getBytesFromStr (Fast.Templates.getComponentTpl comp)
+
+        file.Write bytes
+
+    let private writeFastLibraryFsProj
+        (root: string)
+        (package: string)
+        (version: string)
+        (components: TagVsCodeDefinition array)
+        =
+        let library = Path.Combine(root, "Library.fs")
+
+        let fsproj = Path.Combine(root, "Sutil.Fast.fsproj")
+
+        use library = File.Create library
+
+        let bytes =
+            getBytesFromStr (Fast.Templates.getFastAPIClass components)
+
+        library.Write bytes
+        use fsproj = File.Create fsproj
+
+        let writeComponents =
+            Fast.Templates.getFsFileReference components
+
+        let bytes =
+            getBytesFromStr (Fast.Templates.getFsProjTpl writeComponents package version)
+
+        fsproj.Write bytes
+
     let private getFastComponents () =
         let tryDeserializeFile (path: string) =
             task {
@@ -161,7 +206,19 @@ module Generation =
 
             let! components = getFastComponents ()
             let result = components |> Array.Parallel.choose id
-            printfn "%A" result
+            let path = Path.Combine("../", "Sutil.Fast")
+
+            let dir = Directory.CreateDirectory(path)
+            let package = Fast.FastPackageJson.GetSample()
+            let version = package.Version
+
+            printfn $"Using {package.Name} - {version} from {package.Author.Name}, {package.License}"
+
+            result
+            |> Array.Parallel.iter (writeFastComponentFile dir.FullName)
+
+            writeFastLibraryFsProj dir.FullName package.Name version result
+            printfn $"Generated {result.Length} Components"
         }
 
     let generateLibrary (componentSystem: ComponentSystem) =

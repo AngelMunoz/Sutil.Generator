@@ -69,8 +69,8 @@ module Types =
         { name: string
           title: string
           ``type``: string
-          description: string
-          ``default``: obj
+          description: string option
+          ``default``: obj option
           required: bool option
           values: seq<{| name: string |}> option
           value: obj option }
@@ -78,7 +78,7 @@ module Types =
     type SlotVsCodeDefinition =
         { name: string
           title: string
-          description: string }
+          description: string option }
 
     type TagVsCodeDefinition =
         { name: string
