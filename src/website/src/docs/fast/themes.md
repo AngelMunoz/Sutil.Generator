@@ -41,7 +41,7 @@ that will give you a dark style with the default accent
 
 This part is not obligatory but it might be the easiest way to do it until there's a bindings package for the javascript part of FAST
 ```js
-import { parseColorString, createColorPalette } from 'https://unpkg.com/@microsoft/fast-components';
+import { parseColorString, createColorPalette } from '@microsoft/fast-components';
 
 // generate a new color palette for the color you chose
 export function getPalette(color) {
@@ -106,7 +106,7 @@ Supporting Light and Dark modes is not too hard and should be simple to do. for 
 Let's add a few things to our JS file
 
 ```js
-import { parseColorString, createColorPalette } from 'https://unpkg.com/@microsoft/fast-components';
+import { parseColorString, createColorPalette } from '@microsoft/fast-components';
 
 const prefersDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 const isDark = () => prefersDarkQuery.matches;
