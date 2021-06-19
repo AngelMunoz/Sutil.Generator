@@ -25,6 +25,10 @@ importSideEffects
   "@shoelace-style/shoelace/dist/components/checkbox/checkbox.js"
 
 importSideEffects "@shoelace-style/shoelace/dist/components/icon/icon.js"
+
+importSideEffects
+  "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js"
+
 importSideEffects "@shoelace-style/shoelace/dist/components/menu/menu.js"
 
 importSideEffects

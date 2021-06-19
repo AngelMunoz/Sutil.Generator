@@ -13,7 +13,3 @@ Since Sutil is a pure F# And JS framework without other dependencies rather than
 In this page we're using HTML elements, [Shoelace], and [FAST] components, all in the same place they don't fight each other, they just work completely fine
 
 See them working side by side below 👇🏽
-
-
-
-<script src="https://gist-it.appspot.com/https://github.com/AngelMunoz/Sutil.Generator/blob/dev/src/website/src/Pages/Home.fs"></script>

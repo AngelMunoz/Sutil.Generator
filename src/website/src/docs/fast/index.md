@@ -1,4 +1,4 @@
-[Sutil.Generator]: https://github.com/AngelMunoz/Shoelace.Generator
+[Sutil.Generator]: https://github.com/AngelMunoz/Sutil.Generator
 [FAST]: https://fast.design/
 [Sutil]: https://davedawkins.github.io/Sutil/
 [femto]: https://github.com/Zaid-Ajaj/Femto
@@ -27,7 +27,7 @@ If you are using [femto] then you just need to do
 
 
 ## Versioning
-Sutil.Shoelace is built against the latest version of [Shoelace] in case there are bug fixes on the generator itself or additions for quality of life the nuget version will add a last dot and a number to indicate this was a new version of the generated package.
+Sutil.Fast is built against the latest version of [Fast] in case there are bug fixes on the generator itself or additions for quality of life the nuget version will add a last dot and a number to indicate this was a new version of the generated package.
 
 Example: 
 - `Fast version: v1.21.6`
@@ -37,4 +37,4 @@ Example:
 - `Fast version: v1.21.6`
     **Sutil.Generator Fix/QL Update ->** `Sutil.Fast version: Fast version: v1.21.6.1`
 
-This is expected to be done in rare ocations when a fix or QL update really is needed, for the most part most of the QL updates will be sent with the next Shoelace release to prevent distancing from the shoelace version
+This is expected to be done in rare ocations when a fix or QL update really is needed, for the most part most of the QL updates will be sent with the next Fast release to prevent distancing from the shoelace version

@@ -12,6 +12,7 @@ open type Feliz.length
 
 let view () =
   Html.article [
+    class' "home-page"
     Html.section [
       Shoelace.SlInclude [
         Attr.src "/dist/docs/home.html"
@@ -38,13 +39,6 @@ let view () =
     ]
   ]
   |> withStyle [
-       rule
-         "article"
-         [ Css.marginLeft Feliz.length.auto
-           Css.marginRight Feliz.length.auto
-           Css.marginTop (Feliz.length.em 2)
-           Css.padding (Feliz.length.em 2)
-           Css.paddingTop 0 ]
        rule
          "section.row"
          [ Css.marginTop (em 2)
