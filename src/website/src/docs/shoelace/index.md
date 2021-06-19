@@ -1,4 +1,4 @@
-[Sutil.Generator]: https://github.com/AngelMunoz/Shoelace.Generator
+[Sutil.Generator]: https://github.com/AngelMunoz/Sutil.Generator
 [Shoelace]: https://shoelace.style/
 [Sutil]: https://davedawkins.github.io/Sutil/
 [official React components]: https://shoelace.style/getting-started/usage?id=react

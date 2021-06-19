@@ -7,11 +7,12 @@
     <Compile Include="Types.fs" />
     <Compile Include="Fast.fs" />
     <Compile Include="Shoelace.fs" />
-    <Compile Include="IO.fs" />
+    <Compile Include="Generation.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CliWrap" Version="3.3.2" />
+    <PackageReference Include="FSharp.Data" Version="4.1.1" />
     <PackageReference Include="FSharp.SystemTextJson" Version="0.17.4" />
     <PackageReference Include="Ply" Version="0.3.1" />
     <PackageReference Include="Argu" Version="6.1.1" />

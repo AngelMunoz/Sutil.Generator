@@ -1,4 +1,4 @@
-[Stores]: #/docs/stores
+[Stores]: #/shoelace/docs/stores
 
 # Elmish
 

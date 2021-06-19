@@ -8,6 +8,9 @@
     <Compile Include="Routes.fs" />
     <Compile Include="Components/Sidenav.fs" />
     <Compile Include="Pages/Docs.fs" />
+    <Compile Include="Pages/Shoelace.fs" />
+    <Compile Include="Pages/Fast.fs" />
+    <Compile Include="Pages/Home.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
@@ -20,5 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Sutil.Shoelace\Sutil.Shoelace.fsproj" />
+    <ProjectReference Include="..\..\Sutil.Fast\Sutil.Fast.fsproj" />
   </ItemGroup>
 </Project>

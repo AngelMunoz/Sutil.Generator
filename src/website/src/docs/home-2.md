@@ -1,0 +1,3 @@
+If you take a quick inspection in the browser devloper tools you'll find that both libraries work side by side, in fact the whole site has both libraries' elements scattered! and this doesn't really impact on the performance as long as you cherry pick components (check `getting started` on your favorite library).
+
+If you want to see more details on how these libraries look in F# take a look at the [website docs](https://github.com/AngelMunoz/Sutil.Generator/tree/master/src/website)! 

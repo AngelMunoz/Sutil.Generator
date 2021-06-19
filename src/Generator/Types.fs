@@ -64,3 +64,30 @@ module Types =
           homepage: string
           license: string
           components: SlComponent array }
+
+    type AttributeVscodeDefinition =
+        { name: string
+          title: string
+          ``type``: string
+          description: string option
+          ``default``: obj option
+          required: bool option
+          values: seq<{| name: string |}> option
+          value: obj option }
+
+    type SlotVsCodeDefinition =
+        { name: string
+          title: string
+          description: string option }
+
+    type TagVsCodeDefinition =
+        { name: string
+          title: string
+          description: string
+          attributes: seq<AttributeVscodeDefinition>
+          slots: seq<SlotVsCodeDefinition> }
+
+
+    type HtmlCustomDataVSC =
+        { version: float
+          tags: seq<TagVsCodeDefinition> }
