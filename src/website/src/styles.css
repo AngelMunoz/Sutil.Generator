@@ -118,3 +118,6 @@ article.doc-page sl-include {
   }
 }
 
+pre, code {
+  font-family: 'Fira Code', monospace;
+}

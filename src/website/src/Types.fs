@@ -6,6 +6,10 @@ type Page =
   | Docs of library: string * docSite: string
   | NotFound
 
+type Theme =
+  | Light
+  | Dark
+
 type DocsUrlData =
   { library: string
     page: string option }

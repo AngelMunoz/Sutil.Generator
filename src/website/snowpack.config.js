@@ -5,7 +5,10 @@ module.exports = {
         public: { url: '/', static: true },
         src: { url: '/dist' },
         'node_modules/@shoelace-style/shoelace/dist/assets': { url: '/shoelace/assets', static: true },
-        '../Sutil.Shoelace': { url: '/Sutil.Shoelace', static: true }
+        'node_modules/firacode/distr/woff': { url: '/woff', static: true },
+        'node_modules/firacode/distr/woff2': { url: '/woff2', static: true },
+        '../Sutil.Shoelace': { url: '/Sutil.Shoelace', static: true },
+        '../Sutil.Fast': { url: '/Sutil.Fast', static: true },
     },
     plugins: [
         '@snowpack/plugin-dotenv',

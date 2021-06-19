@@ -14,11 +14,12 @@
     "snowpack": "~3.5.1"
   },
   "dependencies": {
-    "@shoelace-style/shoelace": "2.0.0-beta.43",
-    "highlight.js": "~11.0.1",
-    "navigo": "~8.11.1",
     "@microsoft/fast-components": "^1.21.6",
-		"@microsoft/fast-foundation": "1.24.6",
-		"lodash-es": "4.17.21"
+    "@microsoft/fast-foundation": "1.24.6",
+    "@shoelace-style/shoelace": "2.0.0-beta.43",
+    "firacode": "^5.2.0",
+    "highlight.js": "~11.0.1",
+    "lodash-es": "4.17.21",
+    "navigo": "~8.11.1"
   }
 }

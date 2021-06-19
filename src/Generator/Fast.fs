@@ -1,5 +1,13 @@
 namespace Sutil.Generator.Fast
 
+
+(*
+    DO NOT USE FANTOMAS OR ANOTHER FORMATTER 
+    THAT CHANGES THE MULTI-LINE STRING STRUCTURE ON THIS FILE
+    IT WILL BREAK THE DOC COMMENTS GENERATION
+*)
+
+
 open System
 open Sutil.Generator.Types
 open System.Web
@@ -356,8 +364,8 @@ type Fast =
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>fsharp;fable;svelte</PackageTags>
     <Authors>Angel D. Munoz</Authors>
-    <Version>{version}</Version>
-    <PackageVersion>{version}</PackageVersion>
+    <Version>{version}-beta</Version>
+    <PackageVersion>{version}-beta</PackageVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DefineConstants>$(DefineConstants);FABLE_COMPILER;</DefineConstants>
@@ -365,6 +373,7 @@ type Fast =
   <PropertyGroup>
     <NpmDependencies>
       <NpmPackage Name="{package}" Version="{version}" />
+      <NpmPackage Name="lodash-es" Version="4.17.21" />
     </NpmDependencies>
   </PropertyGroup>
   <ItemGroup>

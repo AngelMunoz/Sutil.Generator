@@ -1,16 +1,30 @@
-Remove-Item Sutil.Shoelace -R -Force -ErrorAction Ignore;
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $true)]
+    [string]
+    $library = "shoelace"
+)
+
+$project = $library -eq "shoelace" ? "Sutil.Shoelace" : "Sutil.Fast"
+
+$root = Get-Location
+
+
+Remove-Item $library -R -Force -ErrorAction Ignore;
 Remove-Item dist -R -Force -ErrorAction Ignore;
 dotnet tool restore
-dotnet run -C Release
+set-location $root/src/Generator
+dotnet run -C Release -- -cs $library
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet build src/Sutil.Shoelace/Sutil.Shoelace
+dotnet build
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet fable --cwd src/Sutil.Shoelace/Sutil.Shoelace
+Set-Location $root
+dotnet fable --cwd src/$project
 if ($LASTEXITCODE -gt 0) {
     Exit 1
 }
-dotnet pack src/Sutil.Shoelace/Sutil.Shoelace -o dist
+dotnet pack src/$project -o dist
