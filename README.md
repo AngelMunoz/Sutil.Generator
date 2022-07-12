@@ -1,3 +1,12 @@
+# STATUS UPDATE
+
+The shoelace spec has changed a little bit and this generator won't work anymore, there is a more standards compatible metadata format which is here
+https://github.com/webcomponents/custom-elements-manifest if you want to make this a reality ping me on twitter @angel_d_munoz, if we can generate an F# AST from that metadata then Fantomas can write the code for us rather than us using strings
+
+
+This project for the moment will be put to rest in the meantime
+
+
 # Sutil.Generator
 
 This is a [Shoelace](https://github.com/shoelace-style/shoelace) and [Fast](https://fast.design) wrapper generator for [Sutil](https://github.com/davedawkins/Sutil) heavily inspider in [react-generator](https://github.com/shoelace-style/react-generator)
